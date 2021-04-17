@@ -68,7 +68,7 @@ def CompareBaseToFrame(base, frame):
 if regiment:
     base_list_frames = GetBaseVideo(0)
 
-cap = cv2.VideoCapture(-1)
+cap = cv2.VideoCapture(0)
 
 """
 if not cap.isOpened():
