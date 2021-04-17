@@ -6,6 +6,7 @@ DO NOT USE THIS IN ANY FORM OF PRODUCTION
 """
 import cv2
 
+# uncomment this to actually use encourage()
 from com import *
 import numpy as np
 
@@ -22,6 +23,7 @@ encourage_threshould = 3
 
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
+        # replace pass with encourage(data) to actually encourage
         encourage(data)
 
 
@@ -65,7 +67,11 @@ def CompareBaseToFrame(base, frame):
 if regiment:
     base_list_frames = GetBaseVideo(0)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(-1)
+
+if not cap.isOpened():
+    print("You need a webcam plugged in, or one that is not being currently used!")
+    exit()
 
 while True:
     ret1, frame1 = cap.read()
