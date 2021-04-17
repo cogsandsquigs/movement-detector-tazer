@@ -1,9 +1,12 @@
 from time import sleep
 import serial
 
-with open("config.txt", "r") as reader:
-    conts = reader.read()
-
+try:
+    with open("config.txt", "r") as reader:
+        conts = reader.read()
+except:
+    from config import *
+    
 try:
     ser = serial.Serial(conts, 9600)
 except:
