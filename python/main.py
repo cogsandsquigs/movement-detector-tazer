@@ -27,7 +27,7 @@ def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
         # replace pass with encourage(data) to actually encourage
         encourage(data)
-        pass
+        # pass
 
 
 def GetBaseVideo(indx):
