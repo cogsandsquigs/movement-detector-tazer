@@ -23,7 +23,7 @@ encourage_threshould = 3
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
         # replace pass with encourage(data) to actually encourage
-        encourage(data)
+        # encourage(data)
         pass
 
 
