@@ -1,13 +1,13 @@
 """
 This code was written by Ian Pratt (ipratt-code, t0x1c_101, etc.)
 All of this was his design (except for stackoverflow help, which is like 
-40% of this). Conor wrote the code in hdwcnct.py
+40% of this). Conor wrote the code in com.py and config.py, as well as the things in encourage-hw
 DO NOT USE THIS IN ANY FORM OF PRODUCTION
 """
 import cv2
 
 # uncomment this to actually use encourage()
-from com import *
+# from com import *
 import numpy as np
 
 regiment = False
@@ -24,7 +24,8 @@ encourage_threshould = 3
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
         # replace pass with encourage(data) to actually encourage
-        encourage(data)
+        # encourage(data)
+        pass
 
 
 def GetBaseVideo(indx):
@@ -73,6 +74,8 @@ if not cap.isOpened():
     print("You need a webcam plugged in, or one that is not being currently used!")
     exit()
 
+print("To exit, press Q on the open window of your webcam feed.")
+
 while True:
     ret1, frame1 = cap.read()
     gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
@@ -83,6 +86,27 @@ while True:
     gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
 
     threshold = GetThreshold(gray1, gray2)
+    """
+    faces = faceCascade.detectMultiScale(
+        gray2,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(3, 3),
+        # flags=cv2.cv.CV_HAAR_SCALE_IMAGE,
+    )
+    # print("Found {0} faces!".format(len(faces)))
+
+    # show face detections
+    for (x, y, w, h) in faces:
+        # Draw a rectangle around the faces
+        roi_gray = gray2[y : y + h, x : x + w]
+        roi_color = threshold[y : y + h, x : x + w]
+        noses = noseCascade.detectMultiScale(roi_gray)
+        if len(noses) >= 1:
+            cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        for (ex, ey, ew, eh) in noses:
+            cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (255, 255, 0), 2)
+    """
     if regiment:
         if (
             GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
@@ -114,7 +138,6 @@ while True:
             EncourageWrapper(1)
         elif threshold_under_count >= threshold_movement_frame_count:
             threshold_buffer_count -= 1
-        print(threshold_under_count)
         threshold_under_count += 1
     else:
         threshold_under_count = 0
@@ -127,14 +150,13 @@ while True:
         cv2.putText(
             frame2,
             "ENCOURAGEMENT INCOMING",
-            (50, 50),
+            (100, 50),
             cv2.FONT_HERSHEY_SIMPLEX,
             1,
             (0, 0, 255),
             2,
             cv2.LINE_4,
         )
-
     # cv2.imshow("threshold", threshold)
     countour, heirarchy = cv2.findContours(
         threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
