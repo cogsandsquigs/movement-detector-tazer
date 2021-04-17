@@ -11,9 +11,9 @@ except:
 
 
 def encourage(data):
-    if data == 0:
+    if data == 1:
         ser.write(str(chr(33)).encode())
         sleep(0.1)
-    if data == 1:
+    if data == 0:
         ser.write(str(chr(34)).encode())
         sleep(0.1)
