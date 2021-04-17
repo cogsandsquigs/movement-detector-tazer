@@ -7,6 +7,7 @@ import cv2
 
 # uncomment this to actually use encourage()
 from com import *
+import audio_input as aio
 import numpy as np
 
 regiment = False
@@ -18,6 +19,7 @@ threshold_buffer_count = threshold_encouragement_buffer
 base_frame_differ_threshold = 0.02
 total_frames_recorded = 45
 encourage_threshould = 3
+audio_limit = 8500  # approx. human scream
 
 
 def EncourageWrapper(data=1):
@@ -68,10 +70,17 @@ if regiment:
     base_list_frames = GetBaseVideo(0)
 
 cap = cv2.VideoCapture(0)
+audio_stream = aio.GenStream()
 
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
+    if aio.GetSoundLevel(audio_stream) >= audio_limit:
+        print("Program stopping, heard scream...")
+        aio.StopEverything(audio_stream)
+        cap.release()
+        cv2.destroyAllWindows()
+        exit()
     ret1, frame1 = cap.read()
     try:
         gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
@@ -151,6 +160,6 @@ while True:
 
     if cv2.waitKey(20) == ord("q"):
         break
-
+aio.StopEverything(audio_stream)
 cap.release()
 cv2.destroyAllWindows()
