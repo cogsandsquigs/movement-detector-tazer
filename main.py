@@ -6,7 +6,7 @@ DO NOT USE THIS IN ANY FORM OF PRODUCTION
 """
 import cv2
 
-# from com import *
+from com import *
 import numpy as np
 
 regiment = False
@@ -22,7 +22,7 @@ encourage_threshould = 3
 
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
-        pass  # encourage(data)
+        encourage(data)
 
 
 def GetBaseVideo(indx):
