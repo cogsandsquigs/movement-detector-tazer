@@ -1,7 +1,7 @@
 install: get-reqs setup run
 
 get-reqs:
-	pip install -U -r requirements.txt
+	pip3 install -U -r requirements.txt
 
 setup:
 	python3 ./python/config.py	

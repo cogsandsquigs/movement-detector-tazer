@@ -23,7 +23,7 @@ encourage_threshould = 3
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
         # replace pass with encourage(data) to actually encourage
-        # encourage(data)
+        encourage(data)
         pass
 
 
@@ -69,11 +69,6 @@ if regiment:
 
 cap = cv2.VideoCapture(0)
 
-"""
-if not cap.isOpened():
-    print("You need a webcam plugged in, or one that is not being currently used!")
-    exit()
-"""
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
@@ -91,27 +86,6 @@ while True:
     gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
 
     threshold = GetThreshold(gray1, gray2)
-    """
-    faces = faceCascade.detectMultiScale(
-        gray2,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(3, 3),
-        # flags=cv2.cv.CV_HAAR_SCALE_IMAGE,
-    )
-    # print("Found {0} faces!".format(len(faces)))
-
-    # show face detections
-    for (x, y, w, h) in faces:
-        # Draw a rectangle around the faces
-        roi_gray = gray2[y : y + h, x : x + w]
-        roi_color = threshold[y : y + h, x : x + w]
-        noses = noseCascade.detectMultiScale(roi_gray)
-        if len(noses) >= 1:
-            cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        for (ex, ey, ew, eh) in noses:
-            cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (255, 255, 0), 2)
-    """
     if regiment:
         if (
             GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
