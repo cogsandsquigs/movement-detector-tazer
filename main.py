@@ -9,8 +9,32 @@ threshold_movement_frame_count = 30
 threshold_under_count = 0  # DONT TOUCH THIS
 threshold_zap_buffer = 25
 threshold_buffer_count = threshold_zap_buffer
+total_frames_recorded = 60
+
+
+def GetBaseVideo(indx):
+    list_frames = []
+    rec = cv2.VideoCapture(indx)
+    i = 0
+    while i < total_frames_recorded:
+        list_frames.append(rec.read())
+        i += 1
+    print(list_frames)
+    return list_frames
+
+
+def GetThreshold(g1, g2):
+    deltaframe = cv2.absdiff(g1, g2)
+    cv2.imshow("delta", deltaframe)
+    threshold = cv2.threshold(deltaframe, 25, 255, cv2.THRESH_BINARY)[1]
+    threshold = cv2.dilate(threshold, None)
+    return threshold
+
+
+GetBaseVideo(0)
 
 cap = cv2.VideoCapture(0)
+
 while True:
 
     ret1, frame1 = cap.read()
@@ -21,10 +45,7 @@ while True:
     gray2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
     gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
 
-    deltaframe = cv2.absdiff(gray1, gray2)
-    cv2.imshow("delta", deltaframe)
-    threshold = cv2.threshold(deltaframe, 25, 255, cv2.THRESH_BINARY)[1]
-    threshold = cv2.dilate(threshold, None)
+    threshold = GetThreshold(gray1, gray2)
 
     # counting the number of pixels
     number_of_white_pix = np.sum(threshold == 255)
