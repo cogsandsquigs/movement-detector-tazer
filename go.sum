@@ -1,0 +1,5 @@
+github.com/go-opencv/go-opencv v0.0.0-20190115070742-a4fe8ec027cc h1:4FHjtvOsr1M3WwN6sRm6Iuvxa9gtu2cwAI/vMXK+7rs=
+github.com/go-opencv/go-opencv v0.0.0-20190115070742-a4fe8ec027cc/go.mod h1:CJDlJ8IGjqEnaJZE1MaUF3eL0EWayFGwM0Eqb6i9l3I=
+github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
+gocv.io/x/gocv v0.27.0 h1:3X8I74ULsWHd4m7DQRv2Nqx5VkKscfUFnKgLNodiboI=
+gocv.io/x/gocv v0.27.0/go.mod h1:n4LnYjykU6y9gn48yZf4eLCdtuSb77XxSkW6g0wGf/A=
