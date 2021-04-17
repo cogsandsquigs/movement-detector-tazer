@@ -1,9 +1,4 @@
-from random import *
 
-for i in range(10):
-    with open(str(i) + "owo" + str(random()) + ".vb", "w") as f:
-        f.write(
-            """
 Imports System
 Module Program
     Sub Main(args As String())
@@ -58,5 +53,3 @@ Module Program
         Console.Read()
     End Sub
 End Module
-"""
-        )
