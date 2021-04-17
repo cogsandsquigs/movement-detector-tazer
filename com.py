@@ -4,8 +4,10 @@ import serial
 with open("config.txt", "r") as reader:
     conts = reader.read()
 
-ser = serial.Serial(conts, 9600)
-
+try:
+    ser = serial.Serial(conts, 9600)
+except:
+    from config import *
 
 def encourage(data):
     if data == 0:
