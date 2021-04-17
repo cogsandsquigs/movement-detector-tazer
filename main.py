@@ -1,15 +1,14 @@
 import cv2
 import numpy as np
 
-# Load the cascade
-# face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-
+regiment = False
 threshold_movement = 0.1
 threshold_movement_frame_count = 30
 threshold_under_count = 0  # DONT TOUCH THIS
-threshold_zap_buffer = 25
-threshold_buffer_count = threshold_zap_buffer
-total_frames_recorded = 60
+threshold_encouragement_buffer = 25
+threshold_buffer_count = threshold_encouragement_buffer
+base_frame_differ_threshold = 0.02
+total_frames_recorded = 45
 
 
 def GetBaseVideo(indx):
@@ -17,9 +16,10 @@ def GetBaseVideo(indx):
     rec = cv2.VideoCapture(indx)
     i = 0
     while i < total_frames_recorded:
-        list_frames.append(rec.read())
+        r, f = rec.read()
+        list_frames.append(f)
         i += 1
-    print(list_frames)
+        cv2.imshow("window", f)
     return list_frames
 
 
@@ -31,12 +31,29 @@ def GetThreshold(g1, g2):
     return threshold
 
 
-GetBaseVideo(0)
+def GetPixelDifference(thresh):
+    number_of_white_pix = np.sum(threshold == 255)
+    number_of_black_pix = np.sum(threshold == 0)
+    return number_of_white_pix / (number_of_white_pix + number_of_black_pix)
+
+
+def CompareBaseToFrame(base, frame):
+    lowest = 10000000000000
+    for base_frame in base:
+        base_frame = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+        base_frame = cv2.GaussianBlur(gray2, (21, 21), 0)
+
+        if GetPixelDifference(GetThreshold(base_frame, frame)) < lowest:
+            lowest = GetPixelDifference(GetThreshold(base_frame, frame))
+    return lowest
+
+
+if regiment:
+    base_list_frames = GetBaseVideo(0)
 
 cap = cv2.VideoCapture(0)
 
 while True:
-
     ret1, frame1 = cap.read()
     gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
     gray1 = cv2.GaussianBlur(gray1, (21, 21), 0)
@@ -46,7 +63,19 @@ while True:
     gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
 
     threshold = GetThreshold(gray1, gray2)
-
+    if regiment:
+        if (
+            GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
+            > base_frame_differ_threshold
+            and threshold_buffer_count <= 0
+        ):
+            threshold_buffer_count = threshold_encouragement_buffer
+            print("giving encouragement: not stick to regimen")
+        elif (
+            GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
+            > base_frame_differ_threshold
+        ):
+            threshold_buffer_count -= 1
     # counting the number of pixels
     number_of_white_pix = np.sum(threshold == 255)
     number_of_black_pix = np.sum(threshold == 0)
@@ -59,8 +88,8 @@ while True:
             threshold_under_count >= threshold_movement_frame_count
             and threshold_buffer_count <= 0
         ):
-            threshold_buffer_count = threshold_zap_buffer
-            print("zap")
+            threshold_buffer_count = threshold_encouragement_buffer
+            print("giving encouragement: timeout")
         elif threshold_under_count >= threshold_movement_frame_count:
             threshold_buffer_count -= 1
         print(threshold_under_count)
@@ -68,7 +97,7 @@ while True:
 
     else:
         threshold_under_count = 0
-        print("no zap")
+        print("giving no encouragement")
 
     cv2.imshow("threshold", threshold)
     countour, heirarchy = cv2.findContours(
