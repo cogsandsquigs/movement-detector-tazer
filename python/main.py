@@ -5,7 +5,6 @@ All of this was his design (except for stackoverflow help, which is like
 """
 import cv2
 
-# uncomment this to actually use encourage()
 from com import *
 import audio_input as aio
 import numpy as np
@@ -25,7 +24,6 @@ scream_mult = 1  # modify this so that if your mic is softer, it multiplies your
 
 def EncourageWrapper(data=1):
     for i in range(encourage_threshould):
-        # replace pass with encourage(data) to actually encourage
         encourage(data)
 
 
@@ -43,7 +41,6 @@ def GetBaseVideo(indx):
 
 def GetThreshold(g1, g2):
     deltaframe = cv2.absdiff(g1, g2)
-    # cv2.imshow("delta", deltaframe)
     threshold = cv2.threshold(deltaframe, 25, 255, cv2.THRESH_BINARY)[1]
     threshold = cv2.dilate(threshold, None)
     return threshold
@@ -75,7 +72,6 @@ audio_stream = aio.GenStream()
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
-    print(aio.GetSoundLevel(audio_stream) * scream_mult)
     if aio.GetSoundLevel(audio_stream) * scream_mult >= audio_limit:
         print("Program stopping, heard scream...")
         aio.StopEverything(audio_stream)
@@ -146,7 +142,6 @@ while True:
             2,
             cv2.LINE_4,
         )
-    # cv2.imshow("threshold", threshold)
     countour, heirarchy = cv2.findContours(
         threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )
