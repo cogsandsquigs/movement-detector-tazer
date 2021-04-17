@@ -83,6 +83,7 @@ while True:
         gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
     except:
         print("You need a webcam plugged in, or one that is not being currently used!")
+        exit()
 
     gray1 = cv2.GaussianBlur(gray1, (21, 21), 0)
 
