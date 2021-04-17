@@ -2,7 +2,6 @@
 This code was written by Ian Pratt (ipratt-code, t0x1c_101, etc.)
 All of this was his design (except for stackoverflow help, which is like 
 40% of this). Conor wrote the code in com.py and config.py, as well as the things in encourage-hw
-DO NOT USE THIS IN ANY FORM OF PRODUCTION
 """
 import cv2
 
