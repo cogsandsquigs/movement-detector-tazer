@@ -75,6 +75,7 @@ audio_stream = aio.GenStream()
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
+    print(aio.GetSoundLevel(audio_stream))
     if aio.GetSoundLevel(audio_stream) >= audio_limit:
         print("Program stopping, heard scream...")
         aio.StopEverything(audio_stream)
