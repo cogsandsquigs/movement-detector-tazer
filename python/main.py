@@ -19,7 +19,8 @@ threshold_buffer_count = threshold_encouragement_buffer
 base_frame_differ_threshold = 0.02
 total_frames_recorded = 45
 encourage_threshould = 3
-audio_limit = 8500  # approx. human scream
+audio_limit = 9000  # approx. human scream
+scream_mult = 1  # modify this so that if your mic is softer, it multiplies your scream strength, and vice versa for sensitive mics.
 
 
 def EncourageWrapper(data=1):
@@ -75,8 +76,8 @@ audio_stream = aio.GenStream()
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
-    print(aio.GetSoundLevel(audio_stream))
-    if aio.GetSoundLevel(audio_stream) >= audio_limit:
+    print(aio.GetSoundLevel(audio_stream) * scream_mult)
+    if aio.GetSoundLevel(audio_stream) * scream_mult >= audio_limit:
         print("Program stopping, heard scream...")
         aio.StopEverything(audio_stream)
         cap.release()
