@@ -1,14 +1,28 @@
+"""
+This code was written by Ian Pratt (ipratt-code, t0x1c_101, etc.)
+All of this was his design (except for stackoverflow help, which is like 
+40% of this). Conor wrote the code in hdwcnct.py
+DO NOT USE THIS IN ANY FORM OF PRODUCTION
+"""
 import cv2
+
+# from com import *
 import numpy as np
 
 regiment = False
-threshold_movement = 0.1
+threshold_movement = 0.075
 threshold_movement_frame_count = 30
 threshold_under_count = 0  # DONT TOUCH THIS
 threshold_encouragement_buffer = 25
 threshold_buffer_count = threshold_encouragement_buffer
 base_frame_differ_threshold = 0.02
 total_frames_recorded = 45
+encourage_threshould = 3
+
+
+def EncourageWrapper(data=1):
+    for i in range(encourage_threshould):
+        pass  # encourage(data)
 
 
 def GetBaseVideo(indx):
@@ -25,7 +39,7 @@ def GetBaseVideo(indx):
 
 def GetThreshold(g1, g2):
     deltaframe = cv2.absdiff(g1, g2)
-    cv2.imshow("delta", deltaframe)
+    # cv2.imshow("delta", deltaframe)
     threshold = cv2.threshold(deltaframe, 25, 255, cv2.THRESH_BINARY)[1]
     threshold = cv2.dilate(threshold, None)
     return threshold
@@ -71,6 +85,7 @@ while True:
         ):
             threshold_buffer_count = threshold_encouragement_buffer
             print("giving encouragement: not stick to regimen")
+            EncourageWrapper(1)
         elif (
             GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
             > base_frame_differ_threshold
@@ -90,16 +105,31 @@ while True:
         ):
             threshold_buffer_count = threshold_encouragement_buffer
             print("giving encouragement: timeout")
+            EncourageWrapper(1)
         elif threshold_under_count >= threshold_movement_frame_count:
             threshold_buffer_count -= 1
         print(threshold_under_count)
         threshold_under_count += 1
-
     else:
         threshold_under_count = 0
         print("giving no encouragement")
 
-    cv2.imshow("threshold", threshold)
+    if (
+        threshold_under_count + 10 >= threshold_movement_frame_count
+        and threshold_under_count < threshold_movement_frame_count
+    ):
+        cv2.putText(
+            frame2,
+            "ENCOURAGEMENT INCOMING",
+            (50, 50),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 0, 255),
+            2,
+            cv2.LINE_4,
+        )
+
+    # cv2.imshow("threshold", threshold)
     countour, heirarchy = cv2.findContours(
         threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )
