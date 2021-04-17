@@ -70,15 +70,20 @@ if regiment:
 
 cap = cv2.VideoCapture(-1)
 
+"""
 if not cap.isOpened():
     print("You need a webcam plugged in, or one that is not being currently used!")
     exit()
-
+"""
 print("To exit, press Q on the open window of your webcam feed.")
 
 while True:
     ret1, frame1 = cap.read()
-    gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+    try:
+        gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+    except:
+        print("You need a webcam plugged in, or one that is not being currently used!")
+
     gray1 = cv2.GaussianBlur(gray1, (21, 21), 0)
 
     ret2, frame2 = cap.read()
