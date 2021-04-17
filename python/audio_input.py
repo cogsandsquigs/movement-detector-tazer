@@ -31,11 +31,3 @@ def StopEverything(stream):
 
 def GetSoundLevel(s):
     return np.average(np.abs(np.fromstring(s.read(CHUNK), dtype=np.int16)) * 2)
-
-
-"""
-stream = GenStream()
-for i in range(int(10 * RATE / CHUNK)):  # do this for 10 seconds
-    print(GetSoundLevel(stream))
-StopEverything(stream)
-"""
