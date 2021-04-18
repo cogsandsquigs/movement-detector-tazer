@@ -5,7 +5,6 @@ All of this was his design (except for stackoverflow help, which is like
 """
 import cv2
 
-from com import *
 import audio_input as aio
 import numpy as np
 
@@ -20,11 +19,6 @@ total_frames_recorded = 45
 encourage_threshould = 3
 audio_limit = 9000  # approx. human scream
 scream_mult = 1  # modify this so that if your mic is softer, it multiplies your scream strength, and vice versa for sensitive mics.
-
-
-def EncourageWrapper(data=1):
-    for i in range(encourage_threshould):
-        encourage(data)
 
 
 def GetBaseVideo(indx):
@@ -100,7 +94,6 @@ while True:
         ):
             threshold_buffer_count = threshold_encouragement_buffer
             print("giving encouragement: not stick to regimen")
-            EncourageWrapper(1)
         elif (
             GetPixelDifference(CompareBaseToFrame(base_list_frames, gray2))
             > base_frame_differ_threshold
@@ -120,7 +113,6 @@ while True:
         ):
             threshold_buffer_count = threshold_encouragement_buffer
             print("giving encouragement: timeout")
-            EncourageWrapper(1)
         elif threshold_under_count >= threshold_movement_frame_count:
             threshold_buffer_count -= 1
         threshold_under_count += 1
